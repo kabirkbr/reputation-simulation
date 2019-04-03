@@ -310,11 +310,13 @@
       "update_period": 1,
       "aggregation": false,
       "denomination": false,
-      "unrated": false
+      "unrated": false,
+      "ratings":0.5,
+      "spendings":0.5
     },
     "macro_view": "antons_view",
-    "use_java": true,
-    "port": 1181,
+    "use_java": false,
+    "port": 1180,
     "output_path": "noUnratednoDenomConserv5SAP182/",
     "seed": 5573,
     "observer_mode": false,
