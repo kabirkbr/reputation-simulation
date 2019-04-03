@@ -385,7 +385,7 @@
     },
     "macro_view": "antons_view",
     "use_java": true,
-    "port": 1184,
+    "port": 1180,
     "output_path": "weightDenomUnratedConserv5Ratings5Spending5/",
     "seed": 9573,
     "observer_mode": false,
