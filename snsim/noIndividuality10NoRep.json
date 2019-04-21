@@ -6,8 +6,8 @@
         "CRg": 1,
         "CRb": 1,
         "GR": 4,
-        "NTg": 1,
-        "NTb": 1,
+        "NTg": 10,
+        "NTb": 10,
         "NIg": 1,
         "NIb": 1,
         "NA": 10,
@@ -16,7 +16,7 @@
         "SIP": 0,
         "PLRg": 100,
         "PLRb": 100,
-        "PR": 1000,
+        "PR": 0,
         "NP": 1,
         "Pmin": 50,
         "Pmax": 150
@@ -367,8 +367,8 @@
   "parameters": {
     "reputation_parameters": {
       "precision": 0.01,
-      "default": 0.0,
-      "conservatism": 0.5,
+      "default": 0.5,
+      "conservatism": 0.9,
       "fullnorm": true,
       "weighting": true,
       "logratings": false,
@@ -379,16 +379,16 @@
       "update_period": 1,
       "aggregation": false,
       "denomination": true,
-      "unrated": false,
-      "ratings":1.0,
-      "spendings":0.0
+      "unrated": true,
+      "ratings":0.5,
+      "spendings":0.5
     },
     "macro_view": "antons_view",
     "use_java": true,
     "port": 1187,
-    "output_path": "noIndividuality1_SOM/",
-    "seed": 7573,
-    "observer_mode": false,
+    "output_path": "noIndividuality10NoRep/",
+    "seed": 9573,
+    "observer_mode": true,
     "randomize_initial_needs": true,
     "ranks_update_period": 1,
     "error_log": false,
@@ -538,7 +538,7 @@
     "chance_of_criminal": 0.05,
     "goodness": [
       0.75,
-      0.15
+      0.001
     ],
     "criminal_goodness": [
       0.0,
@@ -562,7 +562,7 @@
     },
     "rating_perception": [
       0,
-      0.01,
+      0.001,
       -1,
       1
     ],

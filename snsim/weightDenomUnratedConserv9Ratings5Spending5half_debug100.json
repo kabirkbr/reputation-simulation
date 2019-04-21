@@ -5,19 +5,19 @@
       "parameters": {
         "CRg": 9,
         "CRb": 9,
-        "GR": 19,
+        "GR":  9,
         "NTg": 10,
         "NTb": 10,
         "NIg": 1,
         "NIb": 1,
-        "NA": 1000,
+        "NA": 100,
         "D": 180,
         "SP": 182,
         "SIP": 0,
         "PLRg": 60,
         "PLRb": 100,
         "PR": 10,
-        "NP": 2,
+        "NP": 1,
         "Pmin": 50,
         "Pmax": 150
       },
@@ -35,7 +35,7 @@
     }
   },
   "tests": {
-    "sp_182": {
+    "r_sp182": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -109,7 +109,7 @@
         "upper": 1
       }
     },
-    "sp_92": {
+    "r_sp92": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -183,7 +183,7 @@
         "upper": 1
       }
     },
-    "sp_30": {
+    "r_sp30": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -258,7 +258,7 @@
       }
     },
 
-    "sp_10": {
+    "r_sp10": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -337,28 +337,28 @@
     "on":true,
     "parameter_combinations":{
       "scam_period":{
-        "sp_182":{
+        "r_sp182":{
           "scam_parameters":{
             "scam_period":182,
-            "scam_inactive_period":0
+            "scam_inactive_period":91
           }
         },
-        "sp_92":{
+        "r_sp92":{
           "scam_parameters":{
             "scam_period":92,
-            "scam_inactive_period":0
+            "scam_inactive_period":46
           }
         },
-        "sp_30":{
+        "r_sp30":{
           "scam_parameters":{
             "scam_period":30,
-            "scam_inactive_period":0
+            "scam_inactive_period":15
           }
         },
-        "sp_10":{
+        "r_sp10":{
           "scam_parameters":{
             "scam_period":10,
-            "scam_inactive_period":0
+            "scam_inactive_period":5
           }
         }
       }
@@ -368,7 +368,7 @@
     "reputation_parameters": {
       "precision": 0.01,
       "default": 0.5,
-      "conservatism": 0.5,
+      "conservatism": 0.9,
       "fullnorm": true,
       "weighting": true,
       "logratings": false,
@@ -385,8 +385,8 @@
     },
     "macro_view": "antons_view",
     "use_java": true,
-    "port": 1180,
-    "output_path": "weightDenomUnratedConserv5Ratings5Spending5/",
+    "port": 1196,
+    "output_path": "weightDenomUnratedConserv9Ratings5Spending5half_debug100/",
     "seed": 9573,
     "observer_mode": false,
     "randomize_initial_needs": true,
@@ -422,7 +422,7 @@
       0.1
     ],
     "reputation_system_threshold": [
-      50,
+      40,
       1,
       1,
       1000
@@ -433,7 +433,7 @@
       0.99,
       0.02
     ],
-    "param_str": "p_20_0.1_",
+    "param_str": "r_sp182_",
     "prices": {
       "milk": [
         1,
@@ -534,7 +534,7 @@
       ]
     },
     "random_change_suppliers": 1.0,
-    "include_ratings": false,
+    "include_ratings": true,
     "chance_of_criminal": 0.05,
     "goodness": [
       0.75,

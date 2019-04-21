@@ -3,39 +3,39 @@
     "antons_view": {
       "adapter": "antons_view",
       "parameters": {
-        "CRg": 9,
-        "CRb": 9,
-        "GR": 19,
-        "NTg": 10,
-        "NTb": 10,
+        "CRg": 1,
+        "CRb": 1,
+        "GR": 4,
+        "NTg": 1,
+        "NTb": 1,
         "NIg": 1,
         "NIb": 1,
-        "NA": 1000,
-        "D": 180,
-        "SP": 182,
+        "NA": 10,
+        "D": 10,
+        "SP": 6,
         "SIP": 0,
-        "PLRg": 60,
-        "PLRb": 60,
-        "PR": 10,
-        "NP": 2,
+        "PLRg": 100,
+        "PLRb": 100,
+        "PR": 1000,
+        "NP": 1,
         "Pmin": 50,
         "Pmax": 150
       },
       "supplement": {
-        "amounts_stdev" : 0.01,
+        "amounts_stdev" : 0.001,
         "amounts_min" :  0,
         "amounts_max" :  1000,
-        "cobb_douglas_stdev" :  0.01,
-        "need_cycle_stdev" : 0.01,
+        "cobb_douglas_stdev" :  0.001,
+        "need_cycle_stdev" : 0.001,
         "need_cycle_min" :  0,
         "need_cycle_max" :  1000,
-        "price_stdev" : 0.01,
+        "price_stdev" : 0.001,
         "zipf_parameter":  1.1
       }
     }
   },
   "tests": {
-    "r_1_1": {
+    "r_sp10": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -109,7 +109,7 @@
         "upper": 1
       }
     },
-    "r_1_0.5": {
+    "r_sp6": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -183,7 +183,82 @@
         "upper": 1
       }
     },
-    "r_1_0.1": {
+    "r_sp4": {
+      "recall": {
+        "lower": 0,
+        "upper": 1
+      },
+      "precision": {
+        "lower": 0,
+        "upper": 1
+      },
+      "f1": {
+        "lower": 0,
+        "upper": 1
+      },
+      "accuracy": {
+        "lower": 0,
+        "upper": 1
+      },
+      "pearson": {
+        "lower": 0,
+        "upper": 1
+      },
+      "pearsonb": {
+        "lower": 0,
+        "upper": 1
+      },
+      "pearsong": {
+        "lower": 0,
+        "upper": 1
+      },
+      "spearman": {
+        "lower": 0,
+        "upper": 1
+      },
+      "rmsd": {
+        "lower": 0,
+        "upper": 1
+      },
+      "rmsdg": {
+        "lower": 0,
+        "upper": 1
+      },
+      "rmsdb": {
+        "lower": 0,
+        "upper": 1
+      },
+      "profit_from_scam": {
+        "lower": 0,
+        "upper": 1
+      },
+      "loss_to_scam": {
+        "lower": 0,
+        "upper": 1
+      },
+      "stickiness": {
+        "lower": 0,
+        "upper": 1
+      },
+      "market_volume": {
+        "lower": 30,
+        "upper": 40
+      },
+      "price_variance": {
+        "lower": 7500,
+        "upper": 10000
+      },
+      "inequity": {
+        "lower": 0,
+        "upper": 1
+      },
+      "utility": {
+        "lower": 0,
+        "upper": 1
+      }
+    },
+
+    "r_sp2": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -258,67 +333,62 @@
       }
     }
   },
-  "batch": {
-    "on": true,
-    "parameter_combinations": {
-      "ratings": {
-        "r_1": {
-          "include_ratings": true
-        }
-      },
-
-      "num_transactions": {
-        "1": {
-          "criminal_transactions_per_day": [
-            10,
-            1,
-            0,
-            1000
-          ]
+  "batch":{
+    "on":true,
+    "parameter_combinations":{
+      "scam_period":{
+        "r_sp10":{
+          "scam_parameters":{
+            "scam_period":10,
+            "scam_inactive_period":0
+          }
         },
-        "0.5": {
-          "criminal_transactions_per_day": [
-            50,
-            1,
-            0,
-            1000
-          ]
+        "r_sp6":{
+          "scam_parameters":{
+            "scam_period":6,
+            "scam_inactive_period":0
+          }
         },
-        "0.1": {
-          "criminal_transactions_per_day": [
-            100,
-            1,
-            0,
-            1000
-          ]
+        "r_sp4":{
+          "scam_parameters":{
+            "scam_period":4,
+            "scam_inactive_period":0
+          }
+        },
+        "r_sp2":{
+          "scam_parameters":{
+            "scam_period":2,
+            "scam_inactive_period":0
+          }
         }
       }
     }
   },
   "parameters": {
-    "reputation_parameters": {
+     "reputation_parameters": {
       "precision": 0.01,
-      "default": 0.5,
+      "default": 0.0,
       "conservatism": 0.5,
       "fullnorm": true,
       "weighting": true,
       "logratings": false,
       "decayed": 0.5,
-      "liquid": false,
-      "logranks": false,
+      "liquid": true,
+      "logranks": true,
       "downrating": false,
       "update_period": 1,
       "aggregation": false,
-      "denomination": false,
-      "unrated": false,
+      "denomination": true,
+      "unrated": true,
       "ratings":0.5,
       "spendings":0.5
     },
+
     "macro_view": "antons_view",
-    "use_java": false,
-    "port": 1180,
-    "output_path": "noUnratednoDenomConserv5SAP182/",
-    "seed": 5573,
+    "use_java": true,
+    "port": 1187,
+    "output_path": "noIndividuality1_SOM/",
+    "seed": 7573,
     "observer_mode": false,
     "randomize_initial_needs": true,
     "ranks_update_period": 1,
@@ -334,25 +404,27 @@
       "rating": ""
     },
     "suppliers_are_consumers": false,
-    "scam_period": 15,
-    "scam_inactive_period": 10,
+    "scam_parameters": {
+      "scam_period": 15,
+      "scam_inactive_period": 10
+    },
     "criminal_agent_ring_size": [
       50,
-      2,
+      0.001,
       2,
       100
     ],
     "open_to_new_experiences": [
-      0.5,
-      0.1
+      1.0,
+      0.001
     ],
     "fire_supplier_threshold": [
       0.3,
-      0.1
+      0.001
     ],
     "reputation_system_threshold": [
       40,
-      1,
+      0.001,
       1,
       1000
     ],
@@ -360,9 +432,9 @@
     "choice_method": "roulette_wheel",
     "forget_discount": [
       0.99,
-      0.02
+      0.001
     ],
-    "param_str": "p_20_0.1_",
+    "param_str": "r_sp182_",
     "prices": {
       "milk": [
         1,
@@ -462,8 +534,8 @@
         0.2
       ]
     },
-    "random_change_suppliers": 0.01,
-    "include_ratings": false,
+    "random_change_suppliers": 1.0,
+    "include_ratings": true,
     "chance_of_criminal": 0.05,
     "goodness": [
       0.75,
@@ -475,13 +547,13 @@
     ],
     "transactions_per_day": [
       10,
-      1,
+      0.001,
       0,
       1000
     ],
     "criminal_transactions_per_day": [
       100,
-      1,
+      0.001,
       0,
       1000
     ],

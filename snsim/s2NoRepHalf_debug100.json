@@ -337,28 +337,28 @@
     "on":true,
     "parameter_combinations":{
       "scam_period":{
-"r_sp182":{
+        "r_sp182":{
           "scam_parameters":{
             "scam_period":182,
-            "scam_inactive_period":0
+            "scam_inactive_period":91
           }
         },
         "r_sp92":{
           "scam_parameters":{
             "scam_period":92,
-            "scam_inactive_period":0
+            "scam_inactive_period":46
           }
         },
         "r_sp30":{
           "scam_parameters":{
             "scam_period":30,
-            "scam_inactive_period":0
+            "scam_inactive_period":15
           }
         },
         "r_sp10":{
           "scam_parameters":{
             "scam_period":10,
-            "scam_inactive_period":0
+            "scam_inactive_period":5
           }
         }
       }
@@ -386,9 +386,9 @@
     "macro_view": "antons_view",
     "use_java": true,
     "port": 1187,
-    "output_path": "weightDenomUnratedConserv5Ratings5Spending5_debug100/",
+    "output_path": "s2NoRepHalf_debug100/",
     "seed": 9573,
-    "observer_mode": false,
+    "observer_mode": true,
     "randomize_initial_needs": true,
     "ranks_update_period": 1,
     "error_log": false,
