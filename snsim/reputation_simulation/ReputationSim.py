@@ -26,6 +26,7 @@ from reputation import AigentsAPIReputationService
 from reputation.reputation_base_api import *
 from reputation import PythonReputationService
 #from reputation.reputation_service_api import PythonReputationService
+import uuid
 
 
 from mesa import Model
@@ -263,6 +264,9 @@ class ReputationSim(Model):
         self.reset_stats()
         #print ('Last line of ReputationSim __init__')
 
+        # generates a unique identifier for a simulation
+        # which is needed for logging and monitoring system
+        self.simulation_uuid = str(uuid.uuid4())
 
     def reset_reputation_system(self):
         if self.reputation_system:
@@ -513,9 +517,9 @@ class ReputationSim(Model):
         parent_unit_val = payment_unit if rating else ''
 
         self.transaction_report.write(
-            "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\n".format(
+            "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\n".format(
             network_val,timestamp_val,type_val,from_val,to_val,value_val,unit_val,child_val,parent_val,title_val,
-            input_val,tags_val,format_val,block_val,parent_value_val,parent_unit_val))
+            input_val,tags_val,format_val,block_val,parent_value_val,parent_unit_val,self.simulation_uuid))
 
         #self.transaction_report.flush()
 
