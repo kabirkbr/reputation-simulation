@@ -3,39 +3,39 @@
     "antons_view": {
       "adapter": "antons_view",
       "parameters": {
-        "CRg": 1,
-        "CRb": 1,
-        "GR": 4,
+        "CRg": 9,
+        "CRb": 9,
+        "GR": 19,
         "NTg": 1,
-        "NTb": 1,
+        "NTb": 2,
         "NIg": 1,
         "NIb": 1,
-        "NA": 10,
-        "D": 10,
-        "SP": 6,
+        "NA": 1000,
+        "D": 180,
+        "SP": 182,
         "SIP": 0,
-        "PLRg": 100,
+        "PLRg": 60,
         "PLRb": 100,
-        "PR": 1000,
-        "NP": 1,
+        "PR": 9,
+        "NP": 2,
         "Pmin": 50,
         "Pmax": 150
       },
       "supplement": {
-        "amounts_stdev" : 0.001,
+        "amounts_stdev" : 0.01,
         "amounts_min" :  0,
         "amounts_max" :  1000,
-        "cobb_douglas_stdev" :  0.001,
-        "need_cycle_stdev" : 0.001,
+        "cobb_douglas_stdev" :  0.01,
+        "need_cycle_stdev" : 0.01,
         "need_cycle_min" :  0,
         "need_cycle_max" :  1000,
-        "price_stdev" : 0.001,
+        "price_stdev" : 0.01,
         "zipf_parameter":  1.1
       }
     }
   },
   "tests": {
-    "r_sp10": {
+    "r_sp182": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -109,7 +109,7 @@
         "upper": 1
       }
     },
-    "r_sp6": {
+    "r_sp92": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -183,7 +183,7 @@
         "upper": 1
       }
     },
-    "r_sp4": {
+    "r_sp30": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -258,7 +258,7 @@
       }
     },
 
-    "r_sp2": {
+    "r_sp10": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -337,28 +337,28 @@
     "on":true,
     "parameter_combinations":{
       "scam_period":{
+        "r_sp182":{
+          "scam_parameters":{
+            "scam_period":182,
+            "scam_inactive_period":91
+          }
+        },
+        "r_sp92":{
+          "scam_parameters":{
+            "scam_period":92,
+            "scam_inactive_period":46
+          }
+        },
+        "r_sp30":{
+          "scam_parameters":{
+            "scam_period":30,
+            "scam_inactive_period":15
+          }
+        },
         "r_sp10":{
           "scam_parameters":{
             "scam_period":10,
-            "scam_inactive_period":0
-          }
-        },
-        "r_sp6":{
-          "scam_parameters":{
-            "scam_period":6,
-            "scam_inactive_period":0
-          }
-        },
-        "r_sp4":{
-          "scam_parameters":{
-            "scam_period":4,
-            "scam_inactive_period":0
-          }
-        },
-        "r_sp2":{
-          "scam_parameters":{
-            "scam_period":2,
-            "scam_inactive_period":0
+            "scam_inactive_period":5
           }
         }
       }
@@ -373,21 +373,22 @@
       "weighting": true,
       "logratings": false,
       "decayed": 0.5,
-      "liquid": false,
-      "logranks": false,
+      "liquid": true,
+      "logranks": true,
       "downrating": false,
       "update_period": 1,
       "aggregation": false,
       "denomination": true,
-      "unrated": false,
-      "ratings":1.0,
-      "spendings":0.0
+      "unrated": true,
+      "ratings":0.5,
+      "spendings":0.5
     },
     "macro_view": "antons_view",
     "use_java": true,
-    "port": 1187,
-    "output_path": "noIndividuality1_SOM/",
-    "seed": 7573,
+    "run_automatic_tests": true,
+    "port": 1214,
+    "output_path": "weightDenomUnratedConserv5Ratings5Spending5half_debug/",
+    "seed": 9573,
     "observer_mode": false,
     "randomize_initial_needs": true,
     "ranks_update_period": 1,
@@ -408,22 +409,22 @@
       "scam_inactive_period": 10
     },
     "criminal_agent_ring_size": [
-      50,
+      9,
       0.001,
       2,
       100
     ],
     "open_to_new_experiences": [
       1.0,
-      0.001
+      0.1
     ],
     "fire_supplier_threshold": [
       0.3,
-      0.001
+      0.1
     ],
     "reputation_system_threshold": [
       40,
-      0.001,
+      1,
       1,
       1000
     ],
@@ -431,7 +432,7 @@
     "choice_method": "roulette_wheel",
     "forget_discount": [
       0.99,
-      0.001
+      0.02
     ],
     "param_str": "r_sp182_",
     "prices": {
@@ -546,13 +547,13 @@
     ],
     "transactions_per_day": [
       10,
-      0.001,
+      1,
       0,
       1000
     ],
     "criminal_transactions_per_day": [
       100,
-      0.001,
+      1,
       0,
       1000
     ],

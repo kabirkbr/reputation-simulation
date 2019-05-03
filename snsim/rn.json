@@ -5,19 +5,19 @@
       "parameters": {
         "CRg": 9,
         "CRb": 9,
-        "GR": 9,
-        "NTg": 10,
-        "NTb": 10,
+        "GR": 19,
+        "NTg": 1,
+        "NTb": 2,
         "NIg": 1,
         "NIb": 1,
-        "NA": 100,
+        "NA": 1000,
         "D": 180,
         "SP": 182,
         "SIP": 0,
         "PLRg": 60,
         "PLRb": 100,
-        "PR": 10,
-        "NP": 1,
+        "PR": 9,
+        "NP": 2,
         "Pmin": 50,
         "Pmax": 150
       },
@@ -34,156 +34,8 @@
       }
     }
   },
-  "tests": {
-    "r_sp182": {
-      "recall": {
-        "lower": 0,
-        "upper": 1
-      },
-      "precision": {
-        "lower": 0,
-        "upper": 1
-      },
-      "f1": {
-        "lower": 0,
-        "upper": 1
-      },
-      "accuracy": {
-        "lower": 0,
-        "upper": 1
-      },
-      "pearson": {
-        "lower": 0,
-        "upper": 1
-      },
-      "pearsonb": {
-        "lower": 0,
-        "upper": 1
-      },
-      "pearsong": {
-        "lower": 0,
-        "upper": 1
-      },
-      "spearman": {
-        "lower": 0,
-        "upper": 1
-      },
-      "rmsd": {
-        "lower": 0,
-        "upper": 1
-      },
-      "rmsdg": {
-        "lower": 0,
-        "upper": 1
-      },
-      "rmsdb": {
-        "lower": 0,
-        "upper": 1
-      },
-      "profit_from_scam": {
-        "lower": 0,
-        "upper": 1
-      },
-      "loss_to_scam": {
-        "lower": 0,
-        "upper": 1
-      },
-      "stickiness": {
-        "lower": 0,
-        "upper": 1
-      },
-      "market_volume": {
-        "lower": 30,
-        "upper": 40
-      },
-      "price_variance": {
-        "lower": 7500,
-        "upper": 10000
-      },
-      "inequity": {
-        "lower": 0,
-        "upper": 1
-      },
-      "utility": {
-        "lower": 0,
-        "upper": 1
-      }
-    },
-    "r_sp92": {
-      "recall": {
-        "lower": 0,
-        "upper": 1
-      },
-      "precision": {
-        "lower": 0,
-        "upper": 1
-      },
-      "f1": {
-        "lower": 0,
-        "upper": 1
-      },
-      "accuracy": {
-        "lower": 0,
-        "upper": 1
-      },
-      "pearson": {
-        "lower": 0,
-        "upper": 1
-      },
-      "pearsonb": {
-        "lower": 0,
-        "upper": 1
-      },
-      "pearsong": {
-        "lower": 0,
-        "upper": 1
-      },
-      "spearman": {
-        "lower": 0,
-        "upper": 1
-      },
-      "rmsd": {
-        "lower": 0,
-        "upper": 1
-      },
-      "rmsdg": {
-        "lower": 0,
-        "upper": 1
-      },
-      "rmsdb": {
-        "lower": 0,
-        "upper": 1
-      },
-      "profit_from_scam": {
-        "lower": 0,
-        "upper": 1
-      },
-      "loss_to_scam": {
-        "lower": 0,
-        "upper": 1
-      },
-      "stickiness": {
-        "lower": 0,
-        "upper": 1
-      },
-      "market_volume": {
-        "lower": 30,
-        "upper": 40
-      },
-      "price_variance": {
-        "lower": 7500,
-        "upper": 10000
-      },
-      "inequity": {
-        "lower": 0,
-        "upper": 1
-      },
-      "utility": {
-        "lower": 0,
-        "upper": 1
-      }
-    },
-    "r_sp30": {
+ "tests": {
+    "default": {
       "recall": {
         "lower": 0,
         "upper": 1
@@ -258,26 +110,26 @@
       }
     },
 
-    "r_sp10": {
+    "r_10_sp30_na10": {
       "recall": {
-        "lower": 0,
-        "upper": 1
+        "lower": 0.4,
+        "upper": 0.5
       },
       "precision": {
-        "lower": 0,
-        "upper": 1
+        "lower": 0.4,
+        "upper": 0.5
       },
       "f1": {
         "lower": 0,
         "upper": 1
       },
       "accuracy": {
-        "lower": 0,
-        "upper": 1
+        "lower": 0.4,
+        "upper": 0.5
       },
       "pearson": {
-        "lower": 0,
-        "upper": 1
+        "lower": 0.9,
+        "upper": 0.94
       },
       "pearsonb": {
         "lower": 0,
@@ -333,33 +185,39 @@
       }
     }
   },
-  "batch":{
-    "on":true,
-    "parameter_combinations":{
+
+  "batch": {
+   "on": true,
+   "parameter_combinations": {
+     "random_seeds":{
+       "r_10": {
+         "seed":10
+       },
+       "r_20": {
+         "seed":20
+       }
+     },
       "scam_period":{
-        "r_sp182":{
+
+        "sp90":{
           "scam_parameters":{
-            "scam_period":182,
-            "scam_inactive_period":91
+            "scam_period":90,
+            "scam_inactive_period":45
           }
         },
-        "r_sp92":{
-          "scam_parameters":{
-            "scam_period":92,
-            "scam_inactive_period":46
-          }
-        },
-        "r_sp30":{
+        "sp30":{
           "scam_parameters":{
             "scam_period":30,
             "scam_inactive_period":15
           }
+        }
+      },
+      "num_users": {
+        "na10": {
+          "num_users": 10
         },
-        "r_sp10":{
-          "scam_parameters":{
-            "scam_period":10,
-            "scam_inactive_period":5
-          }
+        "na100": {
+          "num_users": 100
         }
       }
     }
@@ -367,28 +225,29 @@
   "parameters": {
     "reputation_parameters": {
       "precision": 0.01,
-      "default": 0.5,
-      "conservatism": 0.5,
+      "default": 0.0,
+      "conservatism": 0.9,
       "fullnorm": true,
       "weighting": true,
       "logratings": false,
       "decayed": 0.5,
-      "liquid": false,
-      "logranks": false,
+      "liquid": true,
+      "logranks": true,
       "downrating": false,
       "update_period": 1,
       "aggregation": false,
       "denomination": true,
       "unrated": true,
-      "ratings":0.5,
-      "spendings":0.5
+      "ratings":1.0,
+      "spendings":0.0
     },
     "macro_view": "antons_view",
-    "use_java": true,
-    "port": 1187,
-    "output_path": "s2NoRepHalf_debug100/",
+    "use_java": false,
+    "run_automatic_tests": true,
+    "port": 1201,
+    "output_path": "rn/",
     "seed": 9573,
-    "observer_mode": true,
+    "observer_mode": false,
     "randomize_initial_needs": true,
     "ranks_update_period": 1,
     "error_log": false,
