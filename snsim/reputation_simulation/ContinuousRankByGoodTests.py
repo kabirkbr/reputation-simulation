@@ -13,7 +13,7 @@ import numpy as np
 class ContinuousRankByGoodTests(unittest.TestCase):
 
 
-    def go(self,config,param_set=set()):
+    def go(self,config,simulation_uuid,param_set=set()):
         self.unittest = False
         self.config = config
         self.param_set = param_set
@@ -49,26 +49,26 @@ class ContinuousRankByGoodTests(unittest.TestCase):
         for code,limits in self.t.items():
             if code != "default":
                 self.codes.append(code)
-                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users_" + code + ".tsv"
+                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users.tsv"
                 self.boolean_users[code] = pd.read_csv(boolean_users_path, "\t", header=None)
-                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory_" + code + ".tsv"
+                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory.tsv"
                 self.rank_history[code] = pd.read_csv(rank_history_path, "\t")
-                users_path = "./" + self.config['parameters']["output_path"] +"users_" + code + ".tsv"
+                users_path = "./" + self.config['parameters']["output_path"] +"users.tsv"
                 self.users[code] = pd.read_csv(users_path, "\t", header=None)
-                transactions_path = "./" + self.config['parameters']["output_path"] +"transactions_" + code + ".tsv"
+                transactions_path = "./" + self.config['parameters']["output_path"] +"transactions.tsv"
                 self.transactions[code] = pd.read_csv(transactions_path, "\t", header=None)
                 if code in self.param_set:
                     self.param_set.remove(code)
         for code in self.param_set:
             if 'default' in self.t:
                 self.codes.append(code)
-                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users_" + code + ".tsv"
+                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users.tsv"
                 self.boolean_users[code] = pd.read_csv(boolean_users_path, "\t", header=None)
-                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory_" + code + ".tsv"
+                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory.tsv"
                 self.rank_history[code] = pd.read_csv(rank_history_path, "\t")
-                users_path = "./" + self.config['parameters']["output_path"] +"users_" + code + ".tsv"
+                users_path = "./" + self.config['parameters']["output_path"] +"users.tsv"
                 self.users[code] = pd.read_csv(users_path, "\t", header=None)
-                transactions_path = "./" + self.config['parameters']["output_path"] +"transactions_" + code + ".tsv"
+                transactions_path = "./" + self.config['parameters']["output_path"] +"transactions.tsv"
                 self.transactions[code] = pd.read_csv(transactions_path, "\t", header=None)
                 self.t[code]= {}
                 self.t[code]['pearson']= {}
@@ -170,7 +170,7 @@ class ContinuousRankByGoodTests(unittest.TestCase):
                     agent_num = int(agent_row[sorted_agents.columns[0]])
                     if agent_num in supplierset:
                         agent_continuous = agent_row[sorted_agents.columns[1]]
-                        agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 1]]
+                        agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 2]]
                         if agent_rank >= 0:
                             goodness_expected.append (agent_continuous)
                             goodness_calculated.append(agent_rank/100)

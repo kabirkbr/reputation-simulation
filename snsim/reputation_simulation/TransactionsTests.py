@@ -11,7 +11,7 @@ from collections import OrderedDict
 
 class TransactionsTests(unittest.TestCase):
 
-    def go(self,config,param_set=set()):
+    def go(self,config,simulation_uuid,param_set=set()):
         self.unittest = False
         self.config = config
         self.param_set = param_set
@@ -43,9 +43,9 @@ class TransactionsTests(unittest.TestCase):
         for code,limits in self.t.items():
             if code != "default":
                 self.codes.append(code)
-                users_path = "./" + self.config['parameters']["output_path"] +"users_" + code +".tsv"
-                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users_" + code + ".tsv"
-                transactions_path = "./" + self.config['parameters']["output_path"] +"transactions_" + code + ".tsv"
+                users_path = "./" + self.config['parameters']["output_path"] +"users.tsv"
+                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users.tsv"
+                transactions_path = "./" + self.config['parameters']["output_path"] +"transactions.tsv"
                 self.transactions[code] = pd.read_csv(transactions_path, "\t", header=None)
                 self.boolean_users[code] = pd.read_csv(boolean_users_path, "\t", header=None)
                 if code in self.param_set:
@@ -53,9 +53,9 @@ class TransactionsTests(unittest.TestCase):
         for code in self.param_set:
             if 'default' in self.t:
                 self.codes.append(code)
-                users_path = "./" + self.config['parameters']["output_path"] +"users_" + code +".tsv"
-                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users_" + code + ".tsv"
-                transactions_path = "./" + self.config['parameters']["output_path"] +"transactions_" + code + ".tsv"
+                users_path = "./" + self.config['parameters']["output_path"] +"users.tsv"
+                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users.tsv"
+                transactions_path = "./" + self.config['parameters']["output_path"] +"transactions.tsv"
                 self.transactions[code] = pd.read_csv(transactions_path, "\t", header=None)
                 self.boolean_users[code] = pd.read_csv(boolean_users_path, "\t", header=None)
                 self.t[code] = {}

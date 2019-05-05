@@ -24,7 +24,6 @@ import math
 from random import shuffle
 from reputation import AigentsAPIReputationService
 from reputation.reputation_base_api import *
-from reputation import PythonReputationService
 #from reputation.reputation_service_api import PythonReputationService
 import uuid
 
@@ -53,8 +52,9 @@ class ReputationSim(Model):
     #     return super(ReputationSim, cls).__new__(cls, *args, **kwargs)
 
 
-    def __init__(self,study_path='study.json',rs=None,  opened_config= False):
+    def __init__(self,simulation_uuid,study_path='study.json',rs=None,  opened_config= False):
        # print('First line of init in RepuationSim, study path is ${0}'.format(study_path))
+        self.simulation_uuid = simulation_uuid
         self.config = None
         if opened_config:
             self.config = study_path
@@ -84,7 +84,8 @@ class ReputationSim(Model):
         #else:
             os.makedirs(self.parameters['output_path'])
         #filename = self.parameters['output_path'] + 'params_' + self.parameters['param_str'] + self.time[0:10] + '.json'
-        filename = self.parameters['output_path'] + 'params_' + self.parameters['param_str'][:-1] + '.json'
+        #filename = self.parameters['output_path'] + 'params_' + self.parameters['param_str'][:-1] + '.json'
+        filename = self.parameters['output_path'] + 'params.json'
 
         pretty = json.dumps(self.config, indent=2, separators=(',', ':'))
         with open(filename, 'w') as outfile:
@@ -264,10 +265,6 @@ class ReputationSim(Model):
         self.reset_stats()
         #print ('Last line of ReputationSim __init__')
 
-        # generates a unique identifier for a simulation
-        # which is needed for logging and monitoring system
-        self.simulation_uuid = str(uuid.uuid4())
-
     def reset_reputation_system(self):
         if self.reputation_system:
 
@@ -297,16 +294,17 @@ class ReputationSim(Model):
         final_tick = secs/(self.parameters['days_per_tick'] * self.seconds_per_day)
         return final_tick
 
-
     def transaction_report(self):
         #path = self.parameters['output_path'] + 'transactions_' +self.parameters['param_str'] + self.time[0:10] + '.tsv'
-        path = self.parameters['output_path'] + 'transactions_' +self.parameters['param_str'] [:-1] + '.tsv'
+        #path = self.parameters['output_path'] + 'transactions_' +self.parameters['param_str'] [:-1] + '.tsv'
+        path = self.parameters['output_path'] + 'transactions.tsv'
         file = open(path, "w")
         return(file)
 
     def error_log(self):
         #path = self.parameters['output_path'] + 'transactions_' +self.parameters['param_str'] + self.time[0:10] + '.tsv'
-        path = self.parameters['output_path'] + 'errorLog_' +self.parameters['param_str'] [:-1] + '.tsv'
+        #path = self.parameters['output_path'] + 'errorLog_' +self.parameters['param_str'] [:-1] + '.tsv'
+        path = self.parameters['output_path'] + 'errorLog.tsv'
         file = open(path, "w")
         return(file)
 
@@ -322,7 +320,7 @@ class ReputationSim(Model):
     def finalize_rank(self,id):
         if self.rank_days[id]>0:
             average_rank = int(round(self.rank_sums[id]/ self.rank_days[id]))
-            self.average_rank_history.write("{0}\t{1}\n".format(id,average_rank))
+            self.average_rank_history.write("{0}\t{1}\t{2}\n".format(id,average_rank,self.simulation_uuid))
 
     def finalize_all_ranks(self):
         for good,agentlist in self.suppliers.items():
@@ -333,13 +331,15 @@ class ReputationSim(Model):
 
     def average_rank_history(self):
         #path = self.parameters['output_path'] + 'transactions_' +self.parameters['param_str'] + self.time[0:10] + '.tsv'
-        path = self.parameters['output_path'] + 'averageRankHistory_' +self.parameters['param_str'] [:-1] + '.tsv'
+        #path = self.parameters['output_path'] + 'averageRankHistory_' +self.parameters['param_str'] [:-1] + '.tsv'
+        path = self.parameters['output_path'] + 'averageRankHistory.tsv'
         file = open(path, "w")
 
         #file.write('time\t')
         heading_list = []
         heading_list.append('time')
         heading_list.append('average_rank')
+        heading_list.append('simulation_uuid')
         heading_list.append('\n')
         average_rank_history_heading = "\t".join(map (str, heading_list))
         file.write(average_rank_history_heading)
@@ -349,12 +349,14 @@ class ReputationSim(Model):
 
     def rank_history(self):
         #path = self.parameters['output_path'] + 'transactions_' +self.parameters['param_str'] + self.time[0:10] + '.tsv'
-        path = self.parameters['output_path'] + 'rankHistory_' +self.parameters['param_str'] [:-1] + '.tsv'
+        #path = self.parameters['output_path'] + 'rankHistory_' +self.parameters['param_str'] [:-1] + '.tsv'
+        path = self.parameters['output_path'] + 'rankHistory.tsv'
         file = open(path, "w")
 
         #file.write('time\t')
         heading_list = []
         heading_list.append('time')
+        heading_list.append('simulation_uuid')
         for i in range(len(self.agents)):
             #file.write('{0}\t'.format(self.schedule.agents[i].unique_id))
             heading_list.append(self.agents[i].unique_id)
@@ -372,9 +374,10 @@ class ReputationSim(Model):
     def write_rank_history_line(self):
         heading_list = []
         heading_list.append('time')
-        #self.rank_history_heading = '{0}\t'.format('time')
+        heading_list.append('simulation_uuid')
+        self.rank_history_heading = '{0}\t{1}\t'.format('time','simulation_uuid')
         time = int(round(self.schedule.time))
-        self.rank_history.write('{0}\t'.format(time))
+        self.rank_history.write('{0}\t{1}\t'.format(time,self.simulation_uuid))
         key_sort = [int(key) for key in self.ranks.keys()]
         key_sort.sort()
         od = OrderedDict()
@@ -427,7 +430,8 @@ class ReputationSim(Model):
 
     def market_volume_report(self):
         #path = self.parameters['output_path'] + 'transactions_' +self.parameters['param_str'] + self.time[0:10] + '.tsv'
-        path = self.parameters['output_path'] + 'marketVolume_' +self.parameters['param_str'] [:-1] + '.tsv'
+        #path = self.parameters['output_path'] + 'marketVolume_' +self.parameters['param_str'] [:-1] + '.tsv'
+        path = self.parameters['output_path'] + 'marketVolume.tsv'
         file = open(path, "w")
 
         file.write(
@@ -560,14 +564,14 @@ class ReputationSim(Model):
 
 
         self.market_volume_report.write(
-            "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}\t{30}\t{31}\t{32}\n".format(
+            "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}\t{30}\t{31}\t{32}\t{33}\n".format(
             time, good2bad_daily_avg_price,good2bad_cumul_avg_price,good2bad_daily_avg_num_transactions,good2bad_cumul_avg_num_transactions,
             good2bad_daily_avg_market_vol,good2bad_cumul_avg_market_vol,bad2bad_daily_avg_price,bad2bad_cumul_avg_price,
             bad2bad_daily_avg_num_transactions,bad2bad_cumul_avg_num_transactions,bad2bad_daily_avg_market_vol,bad2bad_cumul_avg_market_vol,good2good_daily_avg_price,good2good_cumul_avg_price,good2good_daily_avg_num_transactions,good2good_cumul_avg_num_transactions,
             good2good_daily_avg_market_vol,good2good_cumul_avg_market_vol,bad2good_daily_avg_price,bad2good_cumul_avg_price,
             bad2good_daily_avg_num_transactions,bad2good_cumul_avg_num_transactions,bad2good_daily_avg_market_vol,bad2good_cumul_avg_market_vol,
             avg_price_ratio, latest_price_ratio,avg_num_transactions_ratio, latest_num_transactions_ratio,
-            avg_market_volume, latest_market_volume, avg_cost_of_being_bad, latest_cost_of_being_bad))
+            avg_market_volume, latest_market_volume, avg_cost_of_being_bad, latest_cost_of_being_bad,self.simulation_uuid))
         self.market_volume_report.flush()
         self.reset_stats()
 
@@ -600,17 +604,19 @@ class ReputationSim(Model):
         #output a list of given users, sorted by goodness.  if the first item of the list is -1, then output all users
 
         #path = self.parameters['output_path'] + 'users_' + self.parameters['param_str'] + self.time[0:10] + '.tsv'
-        path = self.parameters['output_path'] + 'users_' + self.parameters['param_str'][: -1]  + '.tsv'
+        #path = self.parameters['output_path'] + 'users_' + self.parameters['param_str'][: -1]  + '.tsv'
+        path = self.parameters['output_path'] + 'users.tsv'
 
         with open(path, 'w') as outfile:
             agents = self.agents if userlist and userlist[0] == -1 else userlist
             outlist = [(agent.unique_id, agent.goodness) for idx,agent in agents.items()]
             sorted_outlist = sorted(outlist,  key=operator.itemgetter(1), reverse=True)
             for id, goodness in sorted_outlist:
-                outfile.write("{0}\t{1}\n".format(id, goodness))
+                outfile.write("{0}\t{1}\t{2}\n".format(id, goodness,self.simulation_uuid))
         outfile.close()
 
-        path = self.parameters['output_path'] + 'boolean_users_' + self.parameters['param_str'][: -1] + '.tsv'
+        #path = self.parameters['output_path'] + 'boolean_users_' + self.parameters['param_str'][: -1] + '.tsv'
+        path = self.parameters['output_path'] + 'boolean_users.tsv'
 
         with open(path, 'w') as outfile:
             agents = self.agents if userlist and userlist[0] == -1 else userlist
@@ -618,7 +624,7 @@ class ReputationSim(Model):
             sorted_outlist = sorted(outlist, key=operator.itemgetter(1), reverse=True)
             for id, good in sorted_outlist:
                 val = 1 if good else 0
-                outfile.write("{0}\t{1}\n".format(id, val))
+                outfile.write("{0}\t{1}\t{2}\n".format(id, val,self.simulation_uuid))
         outfile.close()
 
 
@@ -643,7 +649,7 @@ class ReputationSim(Model):
         present = int(round(self.schedule.time))
         print('time {0}'.format(present))
         if self.error_log:
-            self.error_log.write('time {0}\n'.format(self.schedule.time))
+            self.error_log.write('time {0}\t{1}\n'.format(self.schedule.time,self.simulation_uuid))
         """Advance the model by one step."""
         self.schedule.step()
         self.print_market_volume_report_line()
@@ -677,6 +683,9 @@ class Runner():
 
     def __init__(self):
         self.param_list = []
+        # generates a unique identifier for a simulation
+        # which is needed for logging and monitoring system
+        self.simulation_uuid = str(uuid.uuid4())
 
     def createTestCsv(self,config,codelist=None):
         import pandas as pd
@@ -785,22 +794,22 @@ class Runner():
         param_set = set(self.param_list)
         test = ContinuousRankByGoodTests()
         param_set = set(self.param_list)
-        test.go(config,param_set)
+        test.go(config,self.simulation_uuid,param_set)
         test = ContinuousRankTests()
         param_set = set(self.param_list)
-        test.go(config,param_set)
+        test.go(config,self.simulation_uuid,param_set)
         test = DiscreteRankTests()
         param_set = set(self.param_list)
-        test.go(config,param_set)
+        test.go(config,self.simulation_uuid,param_set)
         test = GoodnessTests()
         param_set = set(self.param_list)
-        test.go(config,param_set)
+        test.go(config,self.simulation_uuid,param_set)
         test = MarketVolumeTests()
         param_set = set(self.param_list)
-        test.go(config,param_set)
+        test.go(config,self.simulation_uuid,param_set)
         test = TransactionsTests()
         param_set = set(self.param_list)
-        test.go(config,param_set)
+        test.go(config,self.simulation_uuid,param_set)
         param_set = set(self.param_list)
         self.createTestCsv(config, param_set)
 
@@ -849,7 +858,7 @@ class Runner():
                 random.seed(configfile['parameters']['seed'] )
 
             self.set_param( configfile, {"param_str": param_str })
-            repsim = ReputationSim(study_path =configfile, rs=rs, opened_config = True)
+            repsim = ReputationSim(self.simulation_uuid,study_path =configfile, rs=rs, opened_config = True)
             if configfile['parameters']['use_java']:
                 print ("{0} : {1}  port:{2} ".format(configfile['parameters']['output_path'],param_str,configfile['parameters']['port']))
             print("{0} : {1}".format(configfile['parameters']['output_path'], param_str))
@@ -903,7 +912,7 @@ def main():
             if config['parameters']["run_automatic_tests"]:
                 runner.run_tests(config)
         else:
-            repsim = ReputationSim(sys.argv[1]) if len(sys.argv) > 1 else ReputationSim()
+            repsim = ReputationSim(self.simulation_uuid,sys.argv[1]) if len(sys.argv) > 1 else ReputationSim(self.simulation_uuid)
             repsim.go()
 
 

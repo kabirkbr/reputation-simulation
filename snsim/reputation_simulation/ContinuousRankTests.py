@@ -13,7 +13,7 @@ import numpy as np
 class ContinuousRankTests(unittest.TestCase):
 
 
-    def go(self,config,param_set=set()):
+    def go(self,config,simulation_uuid,param_set=set()):
         self.unittest = False
         self.config = config
         self.param_set = param_set
@@ -46,18 +46,18 @@ class ContinuousRankTests(unittest.TestCase):
         for code,limits in self.t.items():
             if code != "default":
                 self.codes.append(code)
-                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory_" + code + ".tsv"
+                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory.tsv"
                 self.rank_history[code] = pd.read_csv(rank_history_path, "\t")
-                users_path = "./" + self.config['parameters']["output_path"] +"users_" + code + ".tsv"
+                users_path = "./" + self.config['parameters']["output_path"] +"users.tsv"
                 self.users[code] = pd.read_csv(users_path, "\t", header=None)
                 if code in self.param_set:
                     self.param_set.remove(code)
         for code in self.param_set:
             if 'default' in self.t:
                 self.codes.append(code)
-                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory_" + code + ".tsv"
+                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory.tsv"
                 self.rank_history[code] = pd.read_csv(rank_history_path, "\t")
-                users_path = "./" + self.config['parameters']["output_path"] +"users_" + code + ".tsv"
+                users_path = "./" + self.config['parameters']["output_path"] +"users.tsv"
                 self.users[code] = pd.read_csv(users_path, "\t", header=None)
                 self.t[code]= {}
                 self.t[code]['pearson']= {}
@@ -122,7 +122,7 @@ class ContinuousRankTests(unittest.TestCase):
             for i2, agent_row in sorted_agents.iterrows():
                 agent_num = int(agent_row[sorted_agents.columns[0]])
                 agent_continuous = agent_row[sorted_agents.columns[1]]
-                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 1]]
+                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 2]]
                 if agent_rank >= 0:
                     goodness_expected.append (agent_continuous)
                     goodness_calculated.append(agent_rank/100)
@@ -216,7 +216,7 @@ class ContinuousRankTests(unittest.TestCase):
             for i2,agent_row in sorted_agents.iterrows():
                 agent_num = int(agent_row[sorted_agents.columns[0]])
                 agent_continuous = agent_row [sorted_agents.columns[1]]
-                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 1]]
+                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 2]]
                 if agent_rank >= 0:
                     normalized_rank = agent_rank/100
                     sqr_diff = (agent_continuous-normalized_rank)**2

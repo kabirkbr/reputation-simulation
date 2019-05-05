@@ -190,9 +190,6 @@
    "on": true,
    "parameter_combinations": {
      "random_seeds":{
-       "r_10": {
-         "seed":10
-       },
        "r_20": {
          "seed":20
        }
@@ -204,18 +201,9 @@
             "scam_period":90,
             "scam_inactive_period":45
           }
-        },
-        "sp30":{
-          "scam_parameters":{
-            "scam_period":30,
-            "scam_inactive_period":15
-          }
         }
       },
       "num_users": {
-        "na10": {
-          "num_users": 10
-        },
         "na100": {
           "num_users": 100
         }
@@ -242,13 +230,10 @@
       "spendings":0.0
     },
     "macro_view": "antons_view",
-    "use_java": false,
     "run_automatic_tests": true,
-    "port": 1201,
     "output_path": "rn/",
     "use_java": true,
     "port": 1288,
-    "output_path": "s2RepHalf_debug100/",
     "seed": 9573,
     "observer_mode": false,
     "randomize_initial_needs": true,

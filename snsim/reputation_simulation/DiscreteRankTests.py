@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 class DiscreteRankTests(unittest.TestCase):
 
-    def go(self,config,param_set=set()):
+    def go(self,config,simulation_uuid,param_set=set()):
         self.unittest = False
         self.config = config
         self.param_set = param_set
@@ -44,18 +44,18 @@ class DiscreteRankTests(unittest.TestCase):
         for code,limits in self.t.items():
             if code != "default":
                 self.codes.append(code)
-                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory_" + code + ".tsv"
+                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory.tsv"
                 self.rank_history[code] = pd.read_csv(rank_history_path, "\t")
-                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users_" + code + ".tsv"
+                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users.tsv"
                 self.boolean_users[code] = pd.read_csv(boolean_users_path, "\t", header=None)
                 if code in self.param_set:
                     self.param_set.remove(code)
         for code in self.param_set:
             if 'default' in self.t:
                 self.codes.append(code)
-                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory_" + code + ".tsv"
+                rank_history_path = "./" + self.config['parameters']["output_path"] +"rankHistory.tsv"
                 self.rank_history[code] = pd.read_csv(rank_history_path, "\t")
-                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users_" + code + ".tsv"
+                boolean_users_path = "./" + self.config['parameters']["output_path"] +"boolean_users.tsv"
                 self.boolean_users[code] = pd.read_csv(boolean_users_path, "\t", header=None)
                 self.t[code] = {}
                 self.t[code]['precision'] = {}
@@ -122,7 +122,7 @@ class DiscreteRankTests(unittest.TestCase):
             for i2,agent_row in sorted_agents.iterrows():
                 agent_num = int(agent_row[sorted_agents.columns[0]])
                 agent_discrete = agent_row [sorted_agents.columns[1]]
-                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 1]]
+                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 2]]
                 if agent_rank >= 0:
                     thresholded_rank = 0 if agent_rank < self.config["parameters"]["reputation_system_threshold"][0] else 1
                     if thresholded_rank == 1 and agent_discrete == 1:

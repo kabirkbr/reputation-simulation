@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 class MarketVolumeTests(unittest.TestCase):
 
-    def go(self,config,param_set=set()):
+    def go(self,config,simulation_uuid,param_set=set()):
         self.unittest = False
         self.config = config
         self.param_set = param_set
@@ -41,14 +41,14 @@ class MarketVolumeTests(unittest.TestCase):
         for code,limits in self.t.items():
             if code != "default":
                 self.codes.append(code)
-                market_volume_report_path = "./" + self.config['parameters']["output_path"] +"marketVolume_" + code + ".tsv"
+                market_volume_report_path = "./" + self.config['parameters']["output_path"] +"marketVolume.tsv"
                 self.market_volume_report[code] = pd.read_csv(market_volume_report_path, "\t")
                 if code in self.param_set:
                     self.param_set.remove(code)
         for code in self.param_set:
             if 'default' in self.t:
                 self.codes.append(code)
-                market_volume_report_path = "./" + self.config['parameters']["output_path"] +"marketVolume_" + code + ".tsv"
+                market_volume_report_path = "./" + self.config['parameters']["output_path"] +"marketVolume.tsv"
                 self.market_volume_report[code] = pd.read_csv(market_volume_report_path, "\t")
                 self.t[code] = {}
                 self.t[code]['loss_to_scam'] = {}
