@@ -122,7 +122,7 @@ class DiscreteRankTests(unittest.TestCase):
             for i2,agent_row in sorted_agents.iterrows():
                 agent_num = int(agent_row[sorted_agents.columns[0]])
                 agent_discrete = agent_row [sorted_agents.columns[1]]
-                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 2]]
+                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 3]]
                 if agent_rank >= 0:
                     thresholded_rank = 0 if agent_rank < self.config["parameters"]["reputation_system_threshold"][0] else 1
                     if thresholded_rank == 1 and agent_discrete == 1:

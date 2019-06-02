@@ -1,0 +1,106 @@
+# config/pipelines.yml
+- pipeline.id: beats
+  config.string: |
+    input { beats { port => 5000 } }
+    output {
+        if [type] == transactions {
+          pipeline { send_to => transactions }
+        } else if [type] == marketVolume {
+          pipeline { send_to => marketVolume }
+        } 
+    }
+- pipeline.id: marketVolume
+  config.string: |
+    input {
+      pipeline {
+        address => marketVolume
+      }
+    }
+    filter {
+      csv {
+          columns => ["time","good2bad daily avg price","good2bad cumul avg price","good2bad daily avg num transactions","good2bad cumul avg num transactions","bad2bad daily avg price","bad2bad cumul avg price","bad2bad daily avg num transactions","bad2bad cumul avg num transactions","bad2bad daily avg market vol", "bad2bad cumul avg market vol","good2good daily avg price","good2good cumul avg price","good2good daily avg num transactions","good2good cumul avg num transactions","good2good daily avg market vol","good2good cumul avg market vol","bad2good daily avg price", "bad2good cumul avg price","bad2good daily avg num transactions","bad2good cumul avg num transactions","bad2good daily avg market vol","bad2good cumul avg market vol","average price ratio","latest price ratio","average num transactions ratio","latest num transactions ratio","average market volume", "latest market volume","average cost of being bad","latest cost of being bad","simulation_uuid","unix_timestamp"]
+          separator => "  "
+      }
+      date {
+        match => ['unix_timestamp', 'UNIX']
+        target => 'unix_timestamp'
+      }
+      mutate {
+        convert => {
+          "time" => "integer"
+          "good2bad daily avg price" => "float"
+          "good2bad cumul avg price" => "float"
+          "good2bad daily avg num transactions" => "integer"
+          "good2bad cumul avg num transactions" => "integer"
+          "good2bad daily avg market vol" => "float"
+          "good2bad cumul avg market vol" => "float"
+          "bad2bad daily avg price" => "float"
+          "bad2bad cumul avg price" => "float"
+          "bad2bad daily avg num transactions" => "integer"
+          "bad2bad cumul avg num transactions" => "integer"
+          "bad2bad daily avg market vol" => "float"
+          "bad2bad cumul avg market vol" => "float"
+          "good2good daily avg price" => "float"
+          "good2good cumul avg price" => "float"
+          "good2good daily avg num transactions" => "integer"
+          "good2good cumul avg num transactions" => "integer"
+          "good2good daily avg market vol" => "float"
+          "good2good cumul avg market vol" => "float"
+          "bad2good daily avg price" => "float"
+          "bad2good cumul avg price" => "float"
+          "bad2good daily avg num transactions" => "integer"
+          "bad2good cumul avg num transactions" => "integer"
+          "bad2good daily avg market vol" => "float"
+          "bad2good cumul avg market vol" => "float"
+          "average price ratio" => "float"
+          "latest price ratio" => "float" 
+          "average num transactions ratio" => "float"
+          "latest num transactions ratio" => "float"
+          "average market volume" => "float"
+          "latest market volume" => "float"
+          "average cost of being bad" => "float"
+          "latest cost of being bad" => "float"
+        }
+      }
+    } 
+    output {
+      elasticsearch {
+        id => "marketVolume-index"
+        hosts => ["http://elasticsearch:9200"]
+        index => "marketVolume-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+      }
+    }
+- pipeline.id: transactions
+  config.string: |
+    input {
+      pipeline {
+      address => transactions
+      }
+    }
+    filter {
+          csv {
+              columns => ["network_val","timestamp_val","type_val","from_val","to_val","value_val","unit_val","child_val","parent_val","title_val","input_val","tags_val","format_val","block_val","parent_value_val","parent_unit_val","simulation_uuid"]
+              separator => "  "
+          }
+          date {
+            match => ['timestamp_val', 'UNIX']
+            target => 'timestamp_val'
+          }
+          mutate {
+                convert => {
+                  "from_val" => "integer"
+                  "to_val" => "integer"
+                  "value_val" => "float"
+                  "child_val" => "integer"
+                  "parent_val" => "integer"
+                  "parent_value_val" => "float"
+              }
+          }
+    } 
+    output {
+      elasticsearch {
+        id => "transactions-index"
+        hosts => ["http://elasticsearch:9200"]
+        index => "transactions-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+      }
+    }

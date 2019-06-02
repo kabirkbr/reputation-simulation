@@ -356,6 +356,7 @@ class ReputationSim(Model):
         #file.write('time\t')
         heading_list = []
         heading_list.append('time')
+        heading_list.append('timestamp')
         heading_list.append('simulation_uuid')
         for i in range(len(self.agents)):
             #file.write('{0}\t'.format(self.schedule.agents[i].unique_id))
@@ -374,10 +375,12 @@ class ReputationSim(Model):
     def write_rank_history_line(self):
         heading_list = []
         heading_list.append('time')
+        heading_list.append('timestamp')
         heading_list.append('simulation_uuid')
-        self.rank_history_heading = '{0}\t{1}\t'.format('time','simulation_uuid')
+        timestamp = dt.datetime.utcnow().timestamp()
+        self.rank_history_heading = '{0}\t{1}\t{2}\t'.format('time','timestamp','simulation_uuid')
         time = int(round(self.schedule.time))
-        self.rank_history.write('{0}\t{1}\t'.format(time,self.simulation_uuid))
+        self.rank_history.write('{0}\t{1}\t{2}\t'.format(time,timestamp,self.simulation_uuid))
         key_sort = [int(key) for key in self.ranks.keys()]
         key_sort.sort()
         od = OrderedDict()
@@ -435,7 +438,7 @@ class ReputationSim(Model):
         file = open(path, "w")
 
         file.write(
-             "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}\t{30}\t{31}\t{32}\n".format(
+             "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}\t{30}\t{31}\t{32}\t{33}\t{34}\n".format(
                "time", "good2bad daily avg price", "good2bad cumul avg price", "good2bad daily avg num transactions",
                 "good2bad cumul avg num transactions",
                 "good2bad daily avg market vol", "good2bad cumul avg market vol",
@@ -450,7 +453,7 @@ class ReputationSim(Model):
                 "bad2good daily avg market vol", "bad2good cumul avg market vol",
                 "average price ratio", "latest price ratio", "average num transactions ratio",
                 "latest num transactions ratio", "average market volume", "latest market volume",
-                "average cost of being bad", "latest cost of being bad"))
+                "average cost of being bad", "latest cost of being bad", "simulation_uuid", "unix_timestamp"))
 
         return(file)
 
@@ -519,15 +522,17 @@ class ReputationSim(Model):
         block_val = ''
         parent_value_val = payment if rating else ''
         parent_unit_val = payment_unit if rating else ''
+        timestamp = dt.datetime.utcnow().timestamp()
 
         self.transaction_report.write(
-            "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\n".format(
+            "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\n".format(
             network_val,timestamp_val,type_val,from_val,to_val,value_val,unit_val,child_val,parent_val,title_val,
-            input_val,tags_val,format_val,block_val,parent_value_val,parent_unit_val,self.simulation_uuid))
+            input_val,tags_val,format_val,block_val,parent_value_val,parent_unit_val,self.simulation_uuid,timestamp))
 
         #self.transaction_report.flush()
 
     def print_market_volume_report_line(self):
+        timestamp = dt.datetime.utcnow().timestamp()
         time = self.schedule.time -1
         good2good_daily_avg_price= self.good2good_agent_total_price/self.good2good_agent_completed_transactions if self.good2good_agent_completed_transactions else 0
         good2good_cumul_avg_price= self.good2good_agent_cumul_total_price/self.good2good_agent_cumul_completed_transactions if self.good2good_agent_cumul_completed_transactions else 0
@@ -564,14 +569,14 @@ class ReputationSim(Model):
 
 
         self.market_volume_report.write(
-            "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}\t{30}\t{31}\t{32}\t{33}\n".format(
+            "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}\t{30}\t{31}\t{32}\t{33}\t{34}\n".format(
             time, good2bad_daily_avg_price,good2bad_cumul_avg_price,good2bad_daily_avg_num_transactions,good2bad_cumul_avg_num_transactions,
             good2bad_daily_avg_market_vol,good2bad_cumul_avg_market_vol,bad2bad_daily_avg_price,bad2bad_cumul_avg_price,
             bad2bad_daily_avg_num_transactions,bad2bad_cumul_avg_num_transactions,bad2bad_daily_avg_market_vol,bad2bad_cumul_avg_market_vol,good2good_daily_avg_price,good2good_cumul_avg_price,good2good_daily_avg_num_transactions,good2good_cumul_avg_num_transactions,
             good2good_daily_avg_market_vol,good2good_cumul_avg_market_vol,bad2good_daily_avg_price,bad2good_cumul_avg_price,
             bad2good_daily_avg_num_transactions,bad2good_cumul_avg_num_transactions,bad2good_daily_avg_market_vol,bad2good_cumul_avg_market_vol,
-            avg_price_ratio, latest_price_ratio,avg_num_transactions_ratio, latest_num_transactions_ratio,
-            avg_market_volume, latest_market_volume, avg_cost_of_being_bad, latest_cost_of_being_bad,self.simulation_uuid))
+            avg_price_ratio, latest_price_ratio,avg_num_transactions_ratio,latest_num_transactions_ratio,
+            avg_market_volume, latest_market_volume, avg_cost_of_being_bad,latest_cost_of_being_bad,self.simulation_uuid,timestamp))
         self.market_volume_report.flush()
         self.reset_stats()
 

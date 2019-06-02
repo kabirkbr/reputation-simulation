@@ -204,8 +204,8 @@
         }
       },
       "num_users": {
-        "na100": {
-          "num_users": 100
+        "na2000": {
+         "num_users": 2000
         }
       }
     }

@@ -4,6 +4,6 @@
 #
 server.name: kibana
 server.host: "0"
-elasticsearch.url: http://elasticsearch:9200
+elasticsearch.hosts: "http://elasticsearch:9200"
 #logging.dest: /usr/share/kibana/log
 xpack.monitoring.enabled: true

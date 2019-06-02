@@ -122,7 +122,7 @@ class ContinuousRankTests(unittest.TestCase):
             for i2, agent_row in sorted_agents.iterrows():
                 agent_num = int(agent_row[sorted_agents.columns[0]])
                 agent_continuous = agent_row[sorted_agents.columns[1]]
-                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 2]]
+                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 3]]
                 if agent_rank >= 0:
                     goodness_expected.append (agent_continuous)
                     goodness_calculated.append(agent_rank/100)
@@ -216,7 +216,7 @@ class ContinuousRankTests(unittest.TestCase):
             for i2,agent_row in sorted_agents.iterrows():
                 agent_num = int(agent_row[sorted_agents.columns[0]])
                 agent_continuous = agent_row [sorted_agents.columns[1]]
-                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 2]]
+                agent_rank = last_day_row[self.rank_history[code].columns[agent_num + 3]]
                 if agent_rank >= 0:
                     normalized_rank = agent_rank/100
                     sqr_diff = (agent_continuous-normalized_rank)**2
