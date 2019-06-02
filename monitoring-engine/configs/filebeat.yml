@@ -24,9 +24,19 @@ filebeat.inputs:
   enabled: true
 
   # Paths that should be crawled and fetched. Glob based paths.
-  paths:
-    # on-hetzner.host
-    - /home/kabir/reputation/python3.7.2/repos/reputation-simulation/s2RepHalf_debug100/transactions_r_sp30.tsv 
+  paths: 
+    - /home/kabir/reputation/python3.7.2/repos/reputation-simulation/rn/transactions.tsv
+  fields:
+    discr: transactions
+  fields_under_root: true
+
+- type: log
+  enabled: true
+  paths: 
+    - /home/kabir/reputation/python3.7.2/repos/reputation-simulation/rn/marketVolume.tsv
+  fields:
+    discr: market_volume
+  fields_under_root: true
 
     #- c:\programdata\elasticsearch\logs\*
 
